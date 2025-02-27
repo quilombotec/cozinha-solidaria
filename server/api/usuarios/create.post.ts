@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     return await new UsuarioSchema({
-      senha: hashed,
       ...body,
+      senha: hashed,
     }).save();
   } catch (error) {
     return error;

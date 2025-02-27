@@ -6,7 +6,6 @@ export const useCadastro = () => {
   const validado = ref(false);
   const mostrarSenha = ref(false);
   const carregandoStore = useCarregandoStore();
-  const runtimeConfig = useRuntimeConfig();
   const mensagemStore = useMensagemStore();
   const router = useRouter();
 
@@ -19,7 +18,7 @@ export const useCadastro = () => {
   function cadastrar() {
     if (validado.value) {
       carregandoStore.carregando = true;
-      $fetch(`${runtimeConfig.public.baseApi}/usuario`, {
+      $fetch(`/api/usuarios/create`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -31,7 +30,7 @@ export const useCadastro = () => {
           email: email.value,
         },
       })
-        .then(() => {
+        .then((res) => {
           mensagemStore.tipo = "success";
           mensagemStore.mensagem = "Usuário cadastrado com sucesso";
           mensagemStore.mostrarMensagem = true;
@@ -39,11 +38,8 @@ export const useCadastro = () => {
         })
         .catch((err) => {
           mensagemStore.tipo = "error";
-          mensagemStore.mensagem = {
-            mensagem: err.response._data.status,
-            erros: err.response._data.errors?.json,
-          };
-          mensagemStore.mostrarMensagem = true;
+          (mensagemStore.mensagem = err.response._data.message),
+            (mensagemStore.mostrarMensagem = true);
         })
         .finally(() => (carregandoStore.carregando = false));
     }

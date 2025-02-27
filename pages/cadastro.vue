@@ -75,8 +75,15 @@ definePageMeta({
 });
 const { smAndDown } = useDisplay();
 
-const { nome, senha, email, mostrarSenha, validarCadastro, validado } =
-  useCadastro();
+const {
+  nome,
+  senha,
+  email,
+  telefone,
+  mostrarSenha,
+  validarCadastro,
+  validado,
+} = useCadastro();
 
 const { regrasEmail, regrasSenha, campoObrigatorio } =
   useRegrasFormularioCadastro();
