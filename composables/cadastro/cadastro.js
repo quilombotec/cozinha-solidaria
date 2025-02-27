@@ -31,15 +31,17 @@ export const useCadastro = () => {
         },
       })
         .then((res) => {
+          console.log(res);
           mensagemStore.tipo = "success";
           mensagemStore.mensagem = "Usuário cadastrado com sucesso";
           mensagemStore.mostrarMensagem = true;
           router.push("/login");
         })
         .catch((err) => {
+          console.log(err.response);
           mensagemStore.tipo = "error";
-          (mensagemStore.mensagem = err.response._data.message),
-            (mensagemStore.mostrarMensagem = true);
+          mensagemStore.mensagem = err.response._data.message;
+          mensagemStore.mostrarMensagem = true;
         })
         .finally(() => (carregandoStore.carregando = false));
     }
