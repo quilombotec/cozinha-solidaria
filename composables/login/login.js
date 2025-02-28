@@ -30,13 +30,12 @@ export function useLogin() {
       },
     })
       .then((res) => {
-        console.log(res);
         usuarioStore.autenticado = true;
-        usuarioStore.usuario = res.data;
-        if (res.data.adm) {
-          router.push("/adm/home");
+        usuarioStore.usuario = res;
+        if (res.adm) {
+          router.push("/adm/inicio");
         } else {
-          router.push("/home");
+          router.push("/inicio");
         }
       })
       .catch((err) => {

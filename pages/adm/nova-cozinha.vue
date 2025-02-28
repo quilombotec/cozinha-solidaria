@@ -1,8 +1,10 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-card max-width="600" class="mx-auto mt-4">
       <v-card-text>
-        <p class="text-h5 text-center font-weight-bold mb-2">Cadastro</p>
+        <p class="text-h5 text-center font-weight-bold mb-2">
+          Cadastro nova cozinha
+        </p>
 
         <v-form @submit.prevent v-model="validado">
           <label class="font-weight-bold text-h6" for="username">
@@ -68,21 +70,25 @@
   </v-container>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 definePageMeta({
-  layout: "default",
+  layout: "adm",
+  middleware: ["admin"],
 });
 
-const {
-  nome,
-  senha,
-  email,
-  telefone,
-  mostrarSenha,
-  validarCadastro,
-  validado,
-} = useCadastro();
+const mensagemStore = useMensagemStore();
 
-const { regrasEmail, regrasSenha, campoObrigatorio } =
-  useRegrasFormularioCadastro();
+const { data: cozinhas, status } = await useLazyFetch(`/api/cozinhas`, {
+  headers: {
+    "Content-Type": "application/json",
+    // Authorization: usuarioStore.usuario.token,
+  },
+  onResponseError({ response }) {
+    mensagemStore.tipo = "error";
+    mensagemStore.mensagem = response._data.mensagem;
+    mensagemStore.mostrarMensagem = true;
+  },
+});
 </script>
+
+<style></style>
