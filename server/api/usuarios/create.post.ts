@@ -22,6 +22,8 @@ export default defineEventHandler(async (event) => {
   try {
     return await new UsuarioSchema({
       ...resultado.data,
+      adm: false,
+      cozinhas: [],
       senha: hashed,
     }).save();
   } catch (error) {
