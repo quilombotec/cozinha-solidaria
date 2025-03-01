@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <v-data-table :items="usuarios"></v-data-table>
+    <v-data-table
+      :items="usuarios"
+      :loading="status === 'pending'"
+    ></v-data-table>
   </v-container>
 </template>
 
@@ -13,6 +16,7 @@ definePageMeta({
 const mensagemStore = useMensagemStore();
 
 const { data: usuarios, status } = await useLazyFetch(`/api/usuarios`, {
+  default: () => [],
   headers: {
     "Content-Type": "application/json",
     // Authorization: usuarioStore.usuario.token,

@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer">
       <v-list>
         <v-list-item
-          v-for="(item, idx) in items"
+          v-for="(item, idx) in links"
           :key="idx"
           :prepend-icon="`mdi-${item.icone}`"
           :title="item.titulo"
@@ -33,11 +33,11 @@
 <script setup>
 const router = useRouter();
 const drawer = ref(null);
-const items = [
+const itensAdm = [
   {
     titulo: "Inicio",
     icone: "home",
-    rota: "/adm/inicio",
+    rota: "/inicio",
   },
   {
     titulo: "Usuários",
@@ -50,4 +50,17 @@ const items = [
     rota: "/adm/nova-cozinha",
   },
 ];
+const itens = [
+  {
+    titulo: "Inicio",
+    icone: "home",
+    rota: "/inicio",
+  },
+];
+
+const usuarioStore = useUsuarioStore();
+const links = computed(() => {
+  if (usuarioStore.usuario.adm) return itensAdm;
+  return itens;
+});
 </script>

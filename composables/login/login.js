@@ -32,11 +32,7 @@ export function useLogin() {
       .then((res) => {
         usuarioStore.autenticado = true;
         usuarioStore.usuario = res;
-        if (res.adm) {
-          router.push("/adm/inicio");
-        } else {
-          router.push("/inicio");
-        }
+        router.push("/inicio");
       })
       .catch((err) => {
         mensagemStore.tipo = "error";
