@@ -8,41 +8,54 @@
 
         <v-form @submit.prevent v-model="validado">
           <label class="font-weight-bold text-h6" for="username">
-            Nome do usuário
+            Nome da cozinha
           </label>
           <v-text-field
             v-model="nome"
-            :rules="campoObrigatorio"
+            :rules="regras"
             variant="outlined"
             validate-on-blur
           ></v-text-field>
 
-          <label class="font-weight-bold text-h6" for="username">E-mail</label>
+          <label class="font-weight-bold text-h6" for="username">Estado</label>
+          <v-select
+            v-model="estado"
+            :items="estados"
+            :rules="regras"
+            variant="outlined"
+            validate-on-blur
+          ></v-select>
+
+          <label class="font-weight-bold text-h6" for="username">Cidade</label>
           <v-text-field
-            v-model="email"
-            :rules="regrasEmail"
+            v-model="cidade"
+            :rules="regras"
             variant="outlined"
             validate-on-blur
           ></v-text-field>
 
-          <label class="font-weight-bold text-h6" for="username"
-            >Telefone</label
-          >
+          <label class="font-weight-bold text-h6" for="username">Bairro</label>
           <v-text-field
-            v-model="telefone"
-            :rules="campoObrigatorio"
+            v-model="bairro"
+            :rules="regras"
             variant="outlined"
             validate-on-blur
           ></v-text-field>
 
-          <label class="font-weight-bold text-h6" for="Password">Senha</label>
+          <label class="font-weight-bold text-h6" for="Password">Rua</label>
           <v-text-field
-            v-model="senha"
-            :rules="regrasSenha"
+            v-model="rua"
+            :rules="regras"
             variant="outlined"
-            :append-icon="mostrarSenha ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="mostrarSenha = !mostrarSenha"
-            :type="mostrarSenha ? 'text' : 'password'"
+            validate-on-blur
+          ></v-text-field>
+
+          <label class="font-weight-bold text-h6" for="Password">Número</label>
+          <v-text-field
+            v-model="numero"
+            :rules="regras"
+            variant="outlined"
+            validate-on-blur
           ></v-text-field>
 
           <v-row no-gutters justify="space-between">
@@ -50,7 +63,7 @@
               variant="text"
               color="red-darken-4"
               class="text-subtitle-1"
-              @click="$router.push('/login')"
+              @click="$router.push('/adm/inicio')"
             >
               Cancelar
             </v-btn>
@@ -76,19 +89,18 @@ definePageMeta({
   middleware: ["admin"],
 });
 
-const mensagemStore = useMensagemStore();
-
-const { data: cozinhas, status } = await useLazyFetch(`/api/cozinhas`, {
-  headers: {
-    "Content-Type": "application/json",
-    // Authorization: usuarioStore.usuario.token,
-  },
-  onResponseError({ response }) {
-    mensagemStore.tipo = "error";
-    mensagemStore.mensagem = response._data.mensagem;
-    mensagemStore.mostrarMensagem = true;
-  },
-});
+const { regras } = useRegrasFormularioNovaCozinha();
+const {
+  estados,
+  validado,
+  nome,
+  estado,
+  cidade,
+  bairro,
+  rua,
+  numero,
+  validarCadastro,
+} = useNovaCozinha();
 </script>
 
 <style></style>
