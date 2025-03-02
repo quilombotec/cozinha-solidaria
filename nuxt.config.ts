@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["composables/**"],
   },
+  ssr: false,
   modules: [
     "vuetify-nuxt-module",
     "@unocss/nuxt",

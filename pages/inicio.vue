@@ -41,17 +41,18 @@ definePageMeta({
 });
 
 const mensagemStore = useMensagemStore();
+const usuarioStore = useUsuarioStore();
 const router = useRouter();
 
 const { data: cozinhas, status } = await useLazyFetch(`/api/cozinhas`, {
   default: () => [],
   headers: {
     "Content-Type": "application/json",
-    // Authorization: usuarioStore.usuario.token,
+    Authorization: `Bearer ${usuarioStore.usuario.token}`,
   },
   onResponseError({ response }) {
     mensagemStore.tipo = "error";
-    mensagemStore.mensagem = response._data.mensagem;
+    mensagemStore.mensagem = response._data.message;
     mensagemStore.mostrarMensagem = true;
   },
 });

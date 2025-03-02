@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { z } from "zod";
+import jwt from "jsonwebtoken";
 
 const validacao = z.object({
   email: z.string().email(),
@@ -31,5 +32,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return usuario;
+  const token = jwt.sign({ userId: usuario._id }, process.env.JWT_SECRET, {
+    expiresIn: "24h",
+  });
+
+  return {
+    token,
+    id: usuario._id,
+    email: usuario.email,
+    nome: usuario.nome,
+    adm: usuario.adm,
+  };
 });
