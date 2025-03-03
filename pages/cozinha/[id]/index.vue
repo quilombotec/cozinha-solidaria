@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <v-row no-gutters class="ga-6 mt-4">
-      <v-card width="300" @click="router.push('/produtos')">
+      <v-card
+        width="300"
+        @click="router.push(`/cozinha/${route.params.id}/produtos`)"
+      >
         <v-card-text>
           <v-row no-gutters justify="center">
             <v-icon size="50" color="red">mdi-view-list</v-icon>
@@ -29,4 +32,5 @@ definePageMeta({
 });
 
 const router = useRouter();
+const route = useRoute();
 </script>

@@ -7,23 +7,23 @@ export const ProdutoSchema = defineMongooseModel({
       type: "string",
       required: true,
     },
-    cat: {
-      type: "string",
-      required: true,
-    },
+    // cat: {
+    //   type: "string",
+    //   required: true,
+    // },
     un: {
       type: "string",
       required: true,
     },
-    qt: {
+    est: {
       type: "string",
       required: true,
     },
-    qtMin: {
+    estMin: {
       type: "string",
       required: true,
     },
-    cozinhaId: {
+    cozId: {
       type: "string",
       required: true,
     },
