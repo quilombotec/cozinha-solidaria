@@ -70,7 +70,7 @@
 
 <script setup>
 definePageMeta({
-  layout: "default",
+  layout: "log",
 });
 
 const {

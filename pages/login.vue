@@ -56,7 +56,7 @@
 <script setup>
 import { useDisplay } from "vuetify";
 definePageMeta({
-  layout: "default",
+  layout: "log",
 });
 const { smAndDown } = useDisplay();
 
