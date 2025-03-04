@@ -13,7 +13,10 @@
         </v-card-text>
       </v-card>
 
-      <v-card width="300" @click="router.push('/lista-de-compras')">
+      <v-card
+        width="300"
+        @click="router.push(`/cozinha/${route.params.id}/lista-de-compras`)"
+      >
         <v-card-text>
           <v-row no-gutters justify="center">
             <v-icon size="50" color="red">mdi-cart</v-icon>
