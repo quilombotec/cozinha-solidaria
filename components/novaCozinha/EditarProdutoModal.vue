@@ -93,7 +93,6 @@ function salvar() {
       mensagemStore.mostrarMensagem = true;
     })
     .catch((err) => {
-      console.log(err);
       mensagemStore.tipo = "error";
       mensagemStore.mensagem = err.response._data.message;
       mensagemStore.mostrarMensagem = true;

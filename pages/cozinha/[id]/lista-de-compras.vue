@@ -2,10 +2,10 @@
   <v-container>
     <h1>Lista de compras</h1>
 
-    <v-card width="800" class="mx-auto">
+    <v-card width="800" class="mx-auto" :loading="status === 'pending'">
       <v-card-text>
         <div
-          v-show="todos.length"
+          v-if="itens.length"
           class="d-flex justify-space-between align-center"
           no-gutters
         >
@@ -28,7 +28,8 @@
               color="blue"
               href="#/ativos"
               :variant="visibilidade === 'ativos' ? 'flat' : 'text'"
-              >Ativos
+            >
+              Ativos
             </v-btn>
 
             <v-btn
@@ -42,7 +43,7 @@
 
           <v-btn
             @click="removerCompletados"
-            v-show="todos.length > itensFaltantes"
+            v-if="itens.length > itensFaltantes"
             color="pink"
           >
             Remover completos
@@ -60,24 +61,27 @@
 
         <v-list density="compact">
           <v-list-item
-            v-for="todo in listaDeCompras"
-            :key="todo.id"
+            v-for="item in listaDeCompras"
+            :key="item.id"
             density="compact"
           >
             <div class="d-flex align-center justify-space-between">
               <div class="d-flex align-center w-100">
                 <v-checkbox
-                  v-model="todo.completado"
+                  v-model="item.completado"
                   hide-details
                   density="compact"
                   color="red"
+                  @change="atualizarItem(item)"
                 >
                 </v-checkbox>
                 <v-text-field
-                  v-model="todo.titulo"
+                  v-model="item.nome"
                   variant="text"
                   hide-details
                   density="compact"
+                  @keyup="iniciarContador(item)"
+                  @keydown="limparTemporizador"
                 ></v-text-field>
               </div>
 
@@ -85,7 +89,7 @@
                 icon="mdi-delete"
                 variant="falt"
                 color="blue"
-                @click="removerItem(todo)"
+                @click="removerItem(item)"
               ></v-icon>
             </div>
           </v-list-item>
@@ -100,50 +104,135 @@ definePageMeta({
   layout: "default",
   middleware: ["admin"],
 });
-const STORAGE_KEY = "vue-todomvc";
-
-const filtros = {
-  todos: (todos) => todos,
-  ativos: (todos) => todos.filter((todo) => !todo.completado),
-  completado: (todos) => todos.filter((todo) => todo.completado),
-};
+const mensagemStore = useMensagemStore();
+const usuarioStore = useUsuarioStore();
+const route = useRoute();
 
 // state
-const todos = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+const { data: itens, status } = await useLazyFetch(
+  `/api/listadecompras/cozinha/${route.params.id}`,
+  {
+    default: () => [],
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${usuarioStore.usuario.token}`,
+    },
+    onResponseError({ response }) {
+      mensagemStore.tipo = "error";
+      mensagemStore.mensagem = response._data.message;
+      mensagemStore.mostrarMensagem = true;
+    },
+  }
+);
 const visibilidade = ref("todos");
 
+const filtros = {
+  todos: () => itens.value,
+  ativos: () => itens.value.filter((item) => !item.completado),
+  completado: () => itens.value.filter((item) => item.completado),
+};
+
 // derived state
-const listaDeCompras = computed(() => filtros[visibilidade.value](todos.value));
-const itensFaltantes = computed(() => filtros.ativos(todos.value).length);
+const listaDeCompras = computed(() => filtros[visibilidade.value]());
+const itensFaltantes = computed(() => filtros.ativos().length);
 
 // handle routing
 window.addEventListener("hashchange", onHashChange);
 onHashChange();
 
-// persist state
-watchEffect(() => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos.value));
-});
-
 const novoItem = ref("");
+const carregando = ref(false);
 function adicionarItem() {
   const value = novoItem.value.trim();
   if (value) {
-    todos.value.push({
-      id: Date.now(),
-      titulo: value,
-      completado: false,
-    });
-    novoItem.value = "";
+    carregando.value = true;
+    $fetch(`/api/listadecompras/create`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${usuarioStore.usuario.token}`,
+      },
+      method: "post",
+      body: {
+        nome: novoItem.value,
+        cozId: route.params.id,
+      },
+    })
+      .then((res) => {
+        itens.value.push(res);
+        novoItem.value = "";
+      })
+      .catch((err) => {
+        mensagemStore.tipo = "error";
+        mensagemStore.mensagem = err.response._data.message;
+        mensagemStore.mostrarMensagem = true;
+      })
+      .finally(() => (carregando.value = false));
   }
 }
 
-function removerItem(todo) {
-  todos.value.splice(todos.value.indexOf(todo), 1);
+function atualizarItem(item) {
+  carregando.value = true;
+  $fetch(`/api/listadecompras/${item._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${usuarioStore.usuario.token}`,
+    },
+    method: "put",
+    body: {
+      nome: item.nome,
+      completado: item.completado,
+    },
+  })
+    .then((res) => {})
+    .catch((err) => {
+      mensagemStore.tipo = "error";
+      mensagemStore.mensagem = err.response._data.message;
+      mensagemStore.mostrarMensagem = true;
+    })
+    .finally(() => (carregando.value = false));
 }
 
-function removerCompletados() {
-  todos.value = filtros.ativos(todos.value);
+function removerItem(item) {
+  carregando.value = true;
+  $fetch(`/api/listadecompras/${item._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${usuarioStore.usuario.token}`,
+    },
+    method: "delete",
+  })
+    .then((res) => {
+      itens.value.splice(itens.value.indexOf(item), 1);
+    })
+    .catch((err) => {
+      mensagemStore.tipo = "error";
+      mensagemStore.mensagem = err.response._data.message;
+      mensagemStore.mostrarMensagem = true;
+    })
+    .finally(() => (carregando.value = false));
+}
+
+function removerCompletados(item) {
+  carregando.value = true;
+  $fetch(`/api/listadecompras/deletarCompletados`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${usuarioStore.usuario.token}`,
+    },
+    method: "delete",
+    body: {
+      ids: filtros.completado(),
+    },
+  })
+    .then((res) => {
+      itens.value = filtros.ativos(itens.value);
+    })
+    .catch((err) => {
+      mensagemStore.tipo = "error";
+      mensagemStore.mensagem = err.response._data.message;
+      mensagemStore.mostrarMensagem = true;
+    })
+    .finally(() => (carregando.value = false));
 }
 
 function onHashChange() {
@@ -154,5 +243,15 @@ function onHashChange() {
     window.location.hash = "";
     visibilidade.value = "todos";
   }
+}
+
+const temporizadorTeclado = ref(null);
+function iniciarContador(item) {
+  clearTimeout(temporizadorTeclado.value);
+  temporizadorTeclado.value = setTimeout(atualizarItem(item), 10000);
+}
+
+function limparTemporizador() {
+  clearTimeout(temporizadorTeclado.value);
 }
 </script>
