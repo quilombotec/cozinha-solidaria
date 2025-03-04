@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Lista de compras</h1>
+    <h1 class="mb-4">Lista de compras</h1>
 
     <v-card width="800" class="mx-auto" :loading="status === 'pending'">
       <v-card-text>
@@ -248,7 +248,7 @@ function onHashChange() {
 const temporizadorTeclado = ref(null);
 function iniciarContador(item) {
   clearTimeout(temporizadorTeclado.value);
-  temporizadorTeclado.value = setTimeout(atualizarItem(item), 10000);
+  temporizadorTeclado.value = setTimeout(() => atualizarItem(item), 700);
 }
 
 function limparTemporizador() {
