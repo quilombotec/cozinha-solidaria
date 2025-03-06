@@ -37,15 +37,17 @@
 <script lang="ts" setup>
 definePageMeta({
   layout: "default",
-  middleware: ["admin"],
 });
 
 const mensagemStore = useMensagemStore();
 const usuarioStore = useUsuarioStore();
 const router = useRouter();
-
-const { data: cozinhas, status } = await useLazyFetch(`/api/cozinhas`, {
+const rota = computed(() =>
+  usuarioStore.usuario.adm ? "/api/cozinhas/todas" : "/api/cozinhas"
+);
+const { data: cozinhas, status } = await useLazyFetch(`${rota.value}`, {
   default: () => [],
+  params: { ids: usuarioStore.usuario.cozinhas.join(",") },
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${usuarioStore.usuario.token}`,

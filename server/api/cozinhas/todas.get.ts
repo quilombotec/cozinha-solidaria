@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   try {
-    return await UsuarioSchema.find({});
+    return await CozinhaSchema.find({});
   } catch (error) {
     return error;
   }

@@ -42,5 +42,6 @@ export default defineEventHandler(async (event) => {
     email: usuario.email,
     nome: usuario.nome,
     adm: usuario.adm,
+    cozinhas: usuario.cozinhas,
   };
 });

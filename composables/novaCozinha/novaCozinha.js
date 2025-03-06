@@ -1,6 +1,7 @@
 export const useNovaCozinha = () => {
   const carregandoStore = useCarregandoStore();
   const mensagemStore = useMensagemStore();
+  const usuarioStore = useUsuarioStore();
   const validado = ref(false);
   const nome = ref("");
   const estado = ref("");
@@ -49,6 +50,7 @@ export const useNovaCozinha = () => {
     $fetch(`/api/cozinhas/create`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${usuarioStore.usuario.token}`,
       },
       method: "post",
       body: {

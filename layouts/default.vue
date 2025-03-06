@@ -17,7 +17,7 @@
 
       <v-row no-gutters justify="center">
         <v-icon size="60">mdi-silverware-fork-knife</v-icon>
-        <p class="text-h2 font-weight-bold text-red ml-2">Cozinha solidária</p>
+        <p class="text-h2 font-weight-bold text-red ml-2">Cozinha Comunista</p>
       </v-row>
     </v-app-bar>
 
@@ -49,12 +49,22 @@ const itensAdm = [
     icone: "silverware-fork-knife",
     rota: "/adm/nova-cozinha",
   },
+  {
+    titulo: "Sobre as cozinhas",
+    icone: "google-circles-communities",
+    rota: "/cozinha-comunista",
+  },
 ];
 const itens = [
   {
     titulo: "Inicio",
     icone: "home",
     rota: "/inicio",
+  },
+  {
+    titulo: "Sobre as cozinhas",
+    icone: "google-circles-communities",
+    rota: "/cozinha-comunista",
   },
 ];
 

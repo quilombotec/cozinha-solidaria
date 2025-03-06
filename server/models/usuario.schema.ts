@@ -24,5 +24,8 @@ export const UsuarioSchema = defineMongooseModel({
       type: Boolean,
       required: true,
     },
+    cozinhas: {
+      type: Array,
+    },
   },
 });
