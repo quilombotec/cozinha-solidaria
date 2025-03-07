@@ -7,10 +7,12 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "teste": "nuxt dev:preview:build"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.10.1",
+    "@vite-pwa/nuxt": "^0.10.6",
     "@vueuse/core": "^12.7.0",
     "@vueuse/nuxt": "^12.7.0",
     "bcrypt": "^5.1.1",

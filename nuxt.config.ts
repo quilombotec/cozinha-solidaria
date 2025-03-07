@@ -12,7 +12,33 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "nuxt-mongoose",
+    "@vite-pwa/nuxt",
   ],
+  pwa: {
+    /* PWA options */
+    manifest: {
+      name: "Cozinha comunista",
+      short_name: "CozinhaComunista",
+      icons: [
+        {
+          src: "android-chrome-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "android-chrome-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+        {
+          src: "android-chrome-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any maskable",
+        },
+      ],
+    },
+  },
   vuetify: {
     moduleOptions: {
       /* module specific options */
