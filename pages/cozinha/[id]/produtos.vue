@@ -15,8 +15,12 @@
       items-per-page="-1"
       hide-default-footer
     >
+      <template v-slot:item.nome="{ item }">
+        <div :class="corItem(item)">{{ item.nome }}</div>
+      </template>
+
       <template v-slot:item.est="{ item }">
-        <div>{{ item.est }} {{ unidades[item.un] }}</div>
+        <div :class="corItem(item)">{{ item.est }} {{ unidades[item.un] }}</div>
       </template>
 
       <template v-slot:item.acoes="{ item }">
@@ -102,6 +106,11 @@ const unidades = {
 
 function adicionarProduto(produto) {
   produtos.value.push(produto);
+}
+
+function corItem(item) {
+  if (item.est <= item.estMin) return "text-red";
+  return "text-black";
 }
 
 const { abrirModalEdicao, atualizarItem, mostrarModalEdicao } =
