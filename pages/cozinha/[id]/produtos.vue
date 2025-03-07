@@ -89,9 +89,9 @@ const { data: produtos, status } = await useLazyFetch(
 
 const mostrarModal = ref(false);
 const cabecalho = [
-  { title: "Nome", value: "nome", align: "start" },
-  { title: "Estoque", value: "est", align: "center" },
-  { title: "Ações", value: "acoes", align: "end" },
+  { title: "Nome", value: "nome", align: "start", sortable: true },
+  { title: "Estoque", value: "est", align: "center", sortable: true },
+  { title: "Ações", value: "acoes", align: "end", sortable: false },
 ];
 const unidades = {
   "Unitário(Un)": "Un",
