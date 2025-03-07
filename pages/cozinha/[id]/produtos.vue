@@ -1,48 +1,64 @@
 <template>
   <v-container>
-    <v-row no-gutters justify="end" class="mb-6">
-      <v-btn color="red" variant="flat" @click="mostrarModal = !mostrarModal">
-        novo produto +
-      </v-btn>
-    </v-row>
-
-    <v-data-table
-      :headers="cabecalho"
-      :items="produtos"
-      class="tabela"
-      :loading="status === 'pending' || carregando"
-      no-data-text="Nenhum produto encontrado. Cadastre um novo produto."
-      items-per-page="-1"
-      hide-default-footer
-    >
-      <template v-slot:item.nome="{ item }">
-        <div :class="corItem(item)">{{ item.nome }}</div>
-      </template>
-
-      <template v-slot:item.est="{ item }">
-        <div :class="corItem(item)">{{ item.est }} {{ unidades[item.un] }}</div>
-      </template>
-
-      <template v-slot:item.acoes="{ item }">
-        <div class="d-flex ga-4 justify-end">
-          <v-btn
-            icon="mdi-pencil"
-            color="blue"
-            size="40"
+    <v-card elevation="0">
+      <v-row no-gutters justify="space-between" class="mb-4 mt-4 mx-4">
+        <div class="d-flex align-center ga-2">
+          <p>Filtro:</p>
+          <v-select
+            v-model="categoriaSelecionada"
+            :items="categorias"
+            hide-details
+            max-width="200"
+            density="compact"
             variant="outlined"
-            @click="abrirModalEdicao(item)"
-          ></v-btn>
-
-          <v-btn
-            icon="mdi-delete"
-            color="red"
-            size="40"
-            variant="outlined"
-            @click="validarExclusao(item._id)"
-          ></v-btn>
+          >
+          </v-select>
         </div>
-      </template>
-    </v-data-table>
+        <v-btn color="red" variant="flat" @click="mostrarModal = !mostrarModal">
+          novo produto +
+        </v-btn>
+      </v-row>
+
+      <v-data-table
+        :headers="cabecalho"
+        :items="filtroProdutos"
+        class="tabela"
+        :loading="status === 'pending' || carregando"
+        no-data-text="Nenhum produto encontrado. Cadastre um novo produto."
+        items-per-page="-1"
+        hide-default-footer
+      >
+        <template v-slot:item.nome="{ item }">
+          <div :class="corItem(item)">{{ item.nome }}</div>
+        </template>
+
+        <template v-slot:item.est="{ item }">
+          <div :class="corItem(item)">
+            {{ item.est }} {{ unidades[item.un] }}
+          </div>
+        </template>
+
+        <template v-slot:item.acoes="{ item }">
+          <div class="d-flex ga-4 justify-end">
+            <v-btn
+              icon="mdi-pencil"
+              color="blue"
+              size="40"
+              variant="outlined"
+              @click="abrirModalEdicao(item)"
+            ></v-btn>
+
+            <v-btn
+              icon="mdi-delete"
+              color="red"
+              size="40"
+              variant="outlined"
+              @click="validarExclusao(item._id)"
+            ></v-btn>
+          </div>
+        </template>
+      </v-data-table>
+    </v-card>
 
     <v-dialog v-model="mostrarConfirmacaoDeletarProduto">
       <v-card color="red">
@@ -91,6 +107,26 @@ const { data: produtos, status } = await useLazyFetch(
   }
 );
 
+const filtroProdutos = computed(() => {
+  if (categoriaSelecionada.value === "Todos") {
+    return produtos.value;
+  } else {
+    return produtos.value.filter(
+      (produto) => produto.cat === categoriaSelecionada.value
+    );
+  }
+});
+const categoriaSelecionada = ref("Todos");
+const categorias = [
+  "Todos",
+  "Alimento",
+  "Limpesa",
+  "Verduras",
+  "Legumes",
+  "Grãos",
+  "Tempero",
+  "Outros",
+];
 const mostrarModal = ref(false);
 const cabecalho = [
   { title: "Nome", value: "nome", align: "start", sortable: true },

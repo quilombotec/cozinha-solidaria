@@ -14,11 +14,16 @@
             placeholder="Nome do item"
             :rules="regras"
           ></v-text-field>
-          <!-- <v-select :items="categorias" placeholder="Categoria"></v-select> -->
           <v-select
             v-model="produtoStore.produto.un"
             :items="unidades"
             placeholder="Unidade de medida"
+            :rules="regras"
+          ></v-select>
+          <v-select
+            v-model="produtoStore.produto.cat"
+            :items="categorias"
+            placeholder="Categoria"
             :rules="regras"
           ></v-select>
           <v-text-field
@@ -61,8 +66,16 @@ const usuarioStore = useUsuarioStore();
 const produtoStore = useProdutoStore();
 
 const model = defineModel();
-// const categorias = [];
 const unidades = ["Unitário(Un)", "Kilo(Kg)", "Litro(L)", "Pacote(P)"];
+const categorias = [
+  "Alimento",
+  "Limpesa",
+  "Verduras",
+  "Legumes",
+  "Grãos",
+  "Tempero",
+  "Outros",
+];
 const carregando = ref(false);
 const regras = [(value) => !!value || "Preenchimento obrigatório."];
 
@@ -84,6 +97,7 @@ function salvar() {
     body: {
       nome: produtoStore.produto.nome,
       un: produtoStore.produto.un,
+      cat: produtoStore.produto.cat,
       est: produtoStore.produto.est,
       estMin: produtoStore.produto.estMin,
     },

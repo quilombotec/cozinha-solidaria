@@ -14,11 +14,16 @@
             placeholder="Nome do item"
             :rules="regras"
           ></v-text-field>
-          <!-- <v-select :items="categorias" placeholder="Categoria"></v-select> -->
           <v-select
             v-model="unidade"
             :items="unidades"
             placeholder="Unidade de medida"
+            :rules="regras"
+          ></v-select>
+          <v-select
+            v-model="categoria"
+            :items="categorias"
+            placeholder="Categoria"
             :rules="regras"
           ></v-select>
           <v-text-field
@@ -64,7 +69,17 @@ const model = defineModel();
 // const categorias = [];
 const nome = ref("");
 const unidades = ["Unitário(Un)", "Kilo(Kg)", "Litro(L)", "Pacote(P)"];
+const categorias = [
+  "Alimento",
+  "Limpesa",
+  "Verduras",
+  "Legumes",
+  "Grãos",
+  "Tempero",
+  "Outros",
+];
 const unidade = ref(null);
+const categoria = ref(null);
 const estoque = ref(null);
 const estoqueMinimo = ref(null);
 const carregando = ref(false);
@@ -78,6 +93,7 @@ function fechar() {
 function limparFormulario() {
   nome.value = "";
   unidade.value = null;
+  categorias.value = null;
   estoque.value = null;
   estoqueMinimo.value = null;
 }
@@ -100,6 +116,7 @@ function cadastrar() {
     body: {
       nome: nome.value,
       un: unidade.value,
+      cat: categoria.value,
       est: estoque.value,
       estMin: estoqueMinimo.value,
       cozId: route.params.id,

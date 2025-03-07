@@ -7,10 +7,10 @@ export const ProdutoSchema = defineMongooseModel({
       type: "string",
       required: true,
     },
-    // cat: {
-    //   type: "string",
-    //   required: true,
-    // },
+    cat: {
+      type: "string",
+      required: true,
+    },
     un: {
       type: "string",
       required: true,
