@@ -2,21 +2,32 @@
   <v-container>
     <v-card elevation="0">
       <v-row no-gutters justify="space-between" class="mb-4 mt-4 mx-4">
-        <div class="d-flex align-center ga-2">
-          <p>Filtro:</p>
-          <v-select
-            v-model="categoriaSelecionada"
-            :items="categorias"
-            hide-details
-            max-width="200"
-            density="compact"
-            variant="outlined"
+        <v-col :cols="width < 480 ? 12 : 6">
+          <div class="d-flex align-center ga-2">
+            <p>Filtro:</p>
+            <v-select
+              v-model="categoriaSelecionada"
+              :items="categorias"
+              hide-details
+              :max-width="width < 480 ? '100%' : '200px'"
+              density="compact"
+              variant="outlined"
+            >
+            </v-select>
+          </div>
+        </v-col>
+
+        <v-col :cols="width < 480 ? 12 : 6" align="end">
+          <v-btn
+            color="red"
+            variant="flat"
+            @click="mostrarModal = !mostrarModal"
+            :block="width < 480"
+            :class="{ 'mt-2': width < 480 }"
           >
-          </v-select>
-        </div>
-        <v-btn color="red" variant="flat" @click="mostrarModal = !mostrarModal">
-          novo produto +
-        </v-btn>
+            novo produto +
+          </v-btn>
+        </v-col>
       </v-row>
 
       <v-data-table
@@ -91,6 +102,7 @@
 const mensagemStore = useMensagemStore();
 const usuarioStore = useUsuarioStore();
 const route = useRoute();
+const { width } = useDisplay();
 const { data: produtos, status } = await useLazyFetch(
   `/api/produtos/cozinha/${route.params.id}`,
   {
