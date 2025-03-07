@@ -31,7 +31,7 @@
       </v-row>
 
       <v-data-table
-        :headers="cabecalho"
+        :headers="width < 600 ? cabecalhoCelular : cabecalhoGrande"
         :items="filtroProdutos"
         class="tabela"
         :loading="status === 'pending' || carregando"
@@ -140,7 +140,13 @@ const categorias = [
   "Outros",
 ];
 const mostrarModal = ref(false);
-const cabecalho = [
+const cabecalhoGrande = [
+  { title: "Nome", value: "nome", align: "start", sortable: true },
+  { title: "Estoque", value: "est", align: "center", sortable: true },
+  { title: "Categoria", value: "cat", align: "center", sortable: true },
+  { title: "Ações", value: "acoes", align: "end", sortable: false },
+];
+const cabecalhoCelular = [
   { title: "Nome", value: "nome", align: "start", sortable: true },
   { title: "Estoque", value: "est", align: "center", sortable: true },
   { title: "Ações", value: "acoes", align: "end", sortable: false },
