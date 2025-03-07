@@ -34,11 +34,27 @@
             color="red"
             size="40"
             variant="outlined"
-            @click="deletarProduto(item._id)"
+            @click="validarExclusao(item._id)"
           ></v-btn>
         </div>
       </template>
     </v-data-table>
+
+    <v-dialog v-model="mostrarConfirmacaoDeletarProduto">
+      <v-card color="red">
+        <v-card-text>
+          <p>Tem certeza que deseja excluir o item ?</p>
+          <v-row no-gutters justify="space-between" class="mt-4">
+            <v-btn
+              variant="outlined"
+              @click="mostrarConfirmacaoDeletarProduto = false"
+              >cancelar</v-btn
+            >
+            <v-btn variant="flat" @click="deletarProduto(itemId)">sim</v-btn>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
 
     <NovaCozinhaNovoProdutoModal
       v-model="mostrarModal"
@@ -91,7 +107,13 @@ function adicionarProduto(produto) {
 const { abrirModalEdicao, atualizarItem, mostrarModalEdicao } =
   useAbrirModalEdicao(produtos);
 
-const { deletarProduto, carregando } = useDeletarProduto(produtos);
+const {
+  deletarProduto,
+  validarExclusao,
+  mostrarConfirmacaoDeletarProduto,
+  itemId,
+  carregando,
+} = useDeletarProduto(produtos);
 </script>
 
 <style scoped>

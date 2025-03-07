@@ -3,6 +3,12 @@ export function useDeletarProduto(produtos) {
   const usuarioStore = useUsuarioStore();
   const carregando = ref(false);
 
+  const itemId = ref(null);
+  const mostrarConfirmacaoDeletarProduto = ref(false);
+  function validarExclusao(id) {
+    itemId.value = id;
+    mostrarConfirmacaoDeletarProduto.value = true;
+  }
   function deletarProduto(id) {
     carregando.value = true;
     $fetch(`/api/produtos/${id}`, {
@@ -17,6 +23,7 @@ export function useDeletarProduto(produtos) {
         mensagemStore.tipo = "success";
         mensagemStore.mensagem = "Produto excluído com sucesso";
         mensagemStore.mostrarMensagem = true;
+        mostrarConfirmacaoDeletarProduto.value = false;
       })
       .catch((err) => {
         mensagemStore.tipo = "error";
@@ -25,5 +32,11 @@ export function useDeletarProduto(produtos) {
       })
       .finally(() => (carregando.value = false));
   }
-  return { deletarProduto, carregando };
+  return {
+    deletarProduto,
+    validarExclusao,
+    mostrarConfirmacaoDeletarProduto,
+    itemId,
+    carregando,
+  };
 }

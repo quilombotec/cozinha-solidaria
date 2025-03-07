@@ -25,11 +25,13 @@
             v-model="estoque"
             placeholder="Estoque"
             :rules="regras"
+            type="number"
           ></v-text-field>
           <v-text-field
             v-model="estoqueMinimo"
             placeholder="Estoque mínimo"
             :rules="regras"
+            type="number"
           ></v-text-field>
 
           <div no-gutters class="d-flex justify-space-between mt-4">

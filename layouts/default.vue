@@ -15,9 +15,14 @@
     <v-app-bar class="bg-grey-lighten-3" elevation="0">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-row no-gutters justify="center">
-        <v-icon size="60">mdi-silverware-fork-knife</v-icon>
-        <p class="text-h2 font-weight-bold text-red ml-2">Cozinha Comunista</p>
+      <v-row no-gutters justify="center" align="center">
+        <v-icon :size="mobile ? 24 : 60">mdi-silverware-fork-knife</v-icon>
+        <p
+          class="text-h2 font-weight-bold text-red ml-2"
+          :class="mobile ? 'text-h5' : 'text-h2'"
+        >
+          Cozinha Comunista
+        </p>
       </v-row>
     </v-app-bar>
 
@@ -33,6 +38,7 @@
 <script setup>
 const router = useRouter();
 const drawer = ref(null);
+const { mobile } = useDisplay();
 const itensAdm = [
   {
     titulo: "Inicio",

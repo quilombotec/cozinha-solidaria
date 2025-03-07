@@ -1,21 +1,38 @@
 <template>
   <v-container>
-    <h1 class="mb-4">Lista de compras</h1>
+    <v-row align="center">
+      <v-icon
+        size="40"
+        class="mb-4"
+        v-if="mobile"
+        @click="router.push(`/cozinha/${route.params.id}`)"
+        >mdi-chevron-left
+      </v-icon>
+      <h1 class="mb-4">Lista de compras</h1>
+    </v-row>
 
-    <v-card width="800" class="mx-auto" :loading="status === 'pending'">
+    <v-card
+      :width="mobile ? '100%' : 800"
+      class="mx-auto"
+      :loading="status === 'pending'"
+    >
       <v-card-text>
-        <div
+        <v-row
           v-if="itens.length"
-          class="d-flex justify-space-between align-center"
           no-gutters
+          justify="space-between"
+          align="center"
         >
-          <div>
+          <div :class="{ 'mb-2 text-center w-100': width < 460 }">
             {{ itensFaltantes === 1 ? " falta" : " Faltam" }}
             <strong>{{ itensFaltantes }}</strong>
             {{ itensFaltantes === 1 ? " item" : " items" }}
           </div>
 
-          <div class="d-flex">
+          <div
+            class="d-flex"
+            :class="{ 'mb-2 justify-center w-100': width < 460 }"
+          >
             <v-btn
               color="blue"
               href="#/todos"
@@ -42,13 +59,15 @@
           </div>
 
           <v-btn
-            @click="removerCompletados"
             v-if="itens.length > itensFaltantes"
+            @click="removerCompletados"
             color="pink"
+            :class="{ 'mt-2': width > 460 && width < 576 }"
+            :block="width < 460"
           >
             Remover completos
           </v-btn>
-        </div>
+        </v-row>
 
         <v-text-field
           v-model="novoItem"
@@ -57,6 +76,7 @@
           class="my-4"
           variant="outlined"
           hide-details
+          inputmode="text"
         ></v-text-field>
 
         <v-list density="compact">
@@ -104,9 +124,11 @@ definePageMeta({
   layout: "default",
   middleware: ["admin"],
 });
+const { mobile, width } = useDisplay();
 const mensagemStore = useMensagemStore();
 const usuarioStore = useUsuarioStore();
 const route = useRoute();
+const router = useRouter();
 
 // state
 const { data: itens, status } = await useLazyFetch(

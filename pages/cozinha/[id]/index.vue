@@ -2,7 +2,7 @@
   <v-container>
     <v-row no-gutters class="ga-6 mt-4">
       <v-card
-        width="300"
+        :width="mobile ? '100%' : 300"
         @click="router.push(`/cozinha/${route.params.id}/produtos`)"
       >
         <v-card-text>
@@ -14,7 +14,7 @@
       </v-card>
 
       <v-card
-        width="300"
+        :width="mobile ? '100%' : 300"
         @click="router.push(`/cozinha/${route.params.id}/lista-de-compras`)"
       >
         <v-card-text>
@@ -34,6 +34,7 @@ definePageMeta({
   middleware: ["admin"],
 });
 
+const { mobile } = useDisplay();
 const router = useRouter();
 const route = useRoute();
 </script>
