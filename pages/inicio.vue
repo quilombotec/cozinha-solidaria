@@ -8,7 +8,7 @@
 
     <v-row class="mt-4">
       <v-col v-for="(cozinha, idx) in cozinhas" :key="idx" cols="12" md="4">
-        <v-card elevation="0" @click="router.push(`/cozinha/${cozinha._id}`)">
+        <v-card elevation="0" @click="irPara(cozinha._id)">
           <v-card-text>
             <div class="d-flex">
               <div class="ml-3">
@@ -58,6 +58,10 @@ const { data: cozinhas, status } = await useLazyFetch(`${rota.value}`, {
     mensagemStore.mostrarMensagem = true;
   },
 });
+
+function irPara(id) {
+  router.push(`/cozinha/${id}`);
+}
 </script>
 
 <style></style>

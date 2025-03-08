@@ -122,7 +122,6 @@
 <script setup>
 definePageMeta({
   layout: "default",
-  middleware: ["admin"],
 });
 const { mobile, width } = useDisplay();
 const mensagemStore = useMensagemStore();

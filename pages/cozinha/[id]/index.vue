@@ -31,7 +31,6 @@
 <script setup>
 definePageMeta({
   layout: "default",
-  middleware: ["admin"],
 });
 
 const { mobile } = useDisplay();
