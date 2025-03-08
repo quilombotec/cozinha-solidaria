@@ -71,7 +71,7 @@
       </v-data-table>
     </v-card>
 
-    <v-dialog v-model="mostrarConfirmacaoDeletarProduto">
+    <v-dialog v-model="mostrarConfirmacaoDeletarProduto" max-width="400">
       <v-card color="red">
         <v-card-text>
           <p>Tem certeza que deseja excluir o item ?</p>
@@ -163,7 +163,7 @@ function adicionarProduto(produto) {
 }
 
 function corItem(item) {
-  if (item.est <= item.estMin) return "text-red";
+  if (parseInt(item.est) <= parseInt(item.estMin)) return "text-red";
   return "text-black";
 }
 
