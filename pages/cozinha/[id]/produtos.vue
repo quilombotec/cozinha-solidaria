@@ -132,7 +132,7 @@ const categoriaSelecionada = ref("Todos");
 const categorias = [
   "Todos",
   "Alimento",
-  "Limpesa",
+  "Limpeza",
   "Verduras",
   "Legumes",
   "Grãos",

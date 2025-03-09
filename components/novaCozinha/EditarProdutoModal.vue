@@ -69,7 +69,7 @@ const model = defineModel();
 const unidades = ["Unitário(Un)", "Kilo(Kg)", "Litro(L)", "Pacote(P)"];
 const categorias = [
   "Alimento",
-  "Limpesa",
+  "Limpeza",
   "Verduras",
   "Legumes",
   "Grãos",
