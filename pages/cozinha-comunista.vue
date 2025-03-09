@@ -31,8 +31,8 @@
           cooperar umas com as outras para benefício da sociedade.
         </p>
         <p>
-          A religião no capitalismo ensina que só aquele que faz parte dela será
-          salvo enquanto outros irão para uma condenação eterna.
+          A religião no capitalismo ensina que a salvação é individual e não
+          coletiva.
         </p>
       </div>
       <p>
